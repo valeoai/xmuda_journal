@@ -1,0 +1,50 @@
+MODEL_2D:
+  TYPE: "UNetResNet34"
+  DUAL_HEAD: True
+  NUM_CLASSES: 6
+MODEL_3D:
+  TYPE: "SCN"
+  DUAL_HEAD: True
+  NUM_CLASSES: 6
+DATASET_SOURCE:
+  TYPE: "NuScenesLidarSegSCN"
+  TRAIN: ("train_usa",)
+  NuScenesLidarSegSCN:
+    preprocess_dir: "/datasets_local/datasets_mjaritz/nuscenes_lidarseg_preprocess/preprocess"
+    nuscenes_dir: "/datasets_local/datasets_mjaritz/nuscenes_preprocess"  # only front cam images are needed
+DATASET_TARGET:
+  TYPE: "NuScenesLidarSegSCN"
+  TRAIN_LABELED: ("train_singapore_labeled",)
+  TRAIN_UNLABELED: ("train_singapore_unlabeled",)
+  VAL: ("val_singapore",)
+  TEST: ("test_singapore",)
+  NuScenesLidarSegSCN:
+    preprocess_dir: "/datasets_local/datasets_mjaritz/nuscenes_lidarseg_preprocess/preprocess"
+    nuscenes_dir: "/datasets_local/datasets_mjaritz/nuscenes_preprocess"  # only front cam images are needed
+    pselab_paths: ("/home/docker_user/workspace/outputs/xmuda_journal/nuscenes_lidarseg/usa_singapore/ssda/xmssda/pselab_data/train_singapore_unlabeled.npy",)
+DATALOADER:
+  NUM_WORKERS: 4
+OPTIMIZER:
+  TYPE: "Adam"
+  BASE_LR: 0.001
+SCHEDULER:
+  TYPE: "MultiStepLR"
+  MultiStepLR:
+    gamma: 0.1
+    milestones: (80000, 90000)
+  MAX_ITERATION: 100000
+TRAIN:
+  BATCH_SIZE: 8
+  SRC_TRG_RATIO: 0.5
+  SUMMARY_PERIOD: 50
+  CHECKPOINT_PERIOD: 5000
+  CLASS_WEIGHTS_SRC: [1.9241476, 1., 2.16763851, 2.78254323, 1.54875664, 1.85686537]  # nuScenes: USA train, test
+  CLASS_WEIGHTS_TRG: [2.21852335, 1., 1.92354397, 1.69109745, 1.50338242, 1.23778486]  # nuScenes: Singapore train labeled
+  XMUDA:
+    lambda_xm_src: 1.0
+    lambda_xm_trg: 0.1
+    lambda_pl: 1.0
+VAL:
+  BATCH_SIZE: 32
+  PERIOD: 5000
+#OUTPUT_DIR: "path/to/output/directory/@"  #  @ will be replaced with config path, e.g. nuscenes/usa_singapore/xmuda

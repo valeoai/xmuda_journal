@@ -1,0 +1,39 @@
+MODEL_2D:
+  TYPE: "UNetResNet34"
+  NUM_CLASSES: 6
+MODEL_3D:
+  TYPE: "SCN"
+  NUM_CLASSES: 6
+DATASET_SOURCE:
+  TYPE: "NuScenesLidarSegSCN"
+  TRAIN: ("train_day",)
+  NuScenesLidarSegSCN:
+    preprocess_dir: "/datasets_local/datasets_mjaritz/nuscenes_lidarseg_preprocess/preprocess"
+    nuscenes_dir: "/datasets_local/datasets_mjaritz/nuscenes_preprocess"  # only front cam images are needed
+DATASET_TARGET:
+  TYPE: "NuScenesLidarSegSCN"
+  VAL: ("val_night",)
+  TEST: ("test_night",)
+  NuScenesLidarSegSCN:
+    preprocess_dir: "/datasets_local/datasets_mjaritz/nuscenes_lidarseg_preprocess/preprocess"
+    nuscenes_dir: "/datasets_local/datasets_mjaritz/nuscenes_preprocess"  # only front cam images are needed
+DATALOADER:
+  NUM_WORKERS: 4
+OPTIMIZER:
+  TYPE: "Adam"
+  BASE_LR: 0.001
+SCHEDULER:
+  TYPE: "MultiStepLR"
+  MultiStepLR:
+    gamma: 0.1
+    milestones: (80000, 90000)
+  MAX_ITERATION: 100000
+TRAIN:
+  BATCH_SIZE: 8
+  SUMMARY_PERIOD: 50
+  CHECKPOINT_PERIOD: 5000
+  CLASS_WEIGHTS: [1.97516268, 1., 2.10103946, 2.05838738, 1.53985452, 1.54031246]
+VAL:
+  BATCH_SIZE: 32
+  PERIOD: 5000
+#OUTPUT_DIR: "path/to/output/directory/@"  #  @ will be replaced with config path, e.g. nuscenes/usa_singapore/xmuda

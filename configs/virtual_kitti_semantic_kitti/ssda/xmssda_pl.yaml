@@ -1,0 +1,51 @@
+MODEL_2D:
+  TYPE: "UNetResNet34"
+  DUAL_HEAD: True
+  NUM_CLASSES: 6
+MODEL_3D:
+  TYPE: "SCN"
+  DUAL_HEAD: True
+  NUM_CLASSES: 6
+DATASET_SOURCE:
+  TYPE: "VirtualKITTISCN"
+  TRAIN: ("train",)
+  VirtualKITTISCN:
+    preprocess_dir: "/datasets_local/datasets_mjaritz/virtual_kitti_preprocess/preprocess"
+    virtual_kitti_dir: "/datasets_local/datasets_mjaritz/virtual_kitti_preprocess"
+DATASET_TARGET:
+  TYPE: "SemanticKITTISCN"
+  TRAIN_LABELED: ("train_labeled",)
+  TRAIN_UNLABELED: ("train_unlabeled",)
+  VAL: ("val",)
+  TEST: ("test",)
+  SemanticKITTISCN:
+    preprocess_dir: "/datasets_local/datasets_mjaritz/semantic_kitti_preprocess/preprocess"
+    semantic_kitti_dir: "/datasets_local/datasets_mjaritz/semantic_kitti_preprocess"
+    merge_classes_style: "VirtualKITTI"
+    pselab_paths: ("/home/docker_user/workspace/outputs/xmuda_journal/virtual_kitti_semantic_kitti/ssda/xmssda/pselab_data/train_unlabeled.npy",)
+DATALOADER:
+  NUM_WORKERS: 4
+OPTIMIZER:
+  TYPE: "Adam"
+  BASE_LR: 0.001
+SCHEDULER:
+  TYPE: "MultiStepLR"
+  MultiStepLR:
+    gamma: 0.1
+    milestones: (25000, 28000)
+  MAX_ITERATION: 30000
+TRAIN:
+  BATCH_SIZE: 8
+  SRC_TRG_RATIO: 0.5
+  SUMMARY_PERIOD: 50
+  CHECKPOINT_PERIOD: 2000
+  CLASS_WEIGHTS_SRC: [1., 2.03402089, 1.20641905, 2.21588055, 2.59745666, 1.82057006]  # Virtual KITTI train
+  CLASS_WEIGHTS_TRG: [1.0364813, 1.27681796, 1., 1.62334721, 3.37626955, 1.46096341]  # SemanticKITTI train_labeled
+  XMUDA:
+    lambda_xm_src: 0.1
+    lambda_xm_trg: 0.01
+    lambda_pl: 1.0
+VAL:
+  BATCH_SIZE: 2
+  PERIOD: 2000
+#OUTPUT_DIR: "path/to/output/directory/@"  #  @ will be replaced with config path, e.g. nuscenes/usa_singapore/xmuda
