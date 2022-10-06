@@ -250,4 +250,4 @@ $ python xmuda/test.py --cfg=configs/nuscenes_lidarseg/usa_singapore/uda/xmuda.y
 ```
 
 ## License
-xMUDA is released under the [Apache 2.0 license](./LICENSE).
+xMUDA and xMoSSDA are released under the [Apache 2.0 license](./LICENSE).
