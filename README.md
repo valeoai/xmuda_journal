@@ -249,5 +249,26 @@ $ cd <root dir of this repo>
 $ python xmuda/test.py --cfg=configs/nuscenes_lidarseg/usa_singapore/uda/xmuda.yaml @/model_2d_065000.pth @/model_3d_095000.pth
 ```
 
+## Model Zoo
+
+You can download some models with the scores below from
+[this Google drive folder](https://drive.google.com/drive/folders/1c6GjzBV2UiWcu4zoNIKsCsfYm1ZRQGPZ?usp=sharing).
+
+### UDA
+
+| Method | nuSc-Lidarseg: USA/Singap. 2D | nuSc-Lidarseg: USA/Singap. 3D | nuSc-Lidarseg: Day/Night 2D | nuSc-Lidarseg: Day/Night 3D | Virt.KITTI/Sem.KITTI 2D | Virt.KITTI/Sem.KITTI 3D | A2D2/Sem.KITTI 2D | A2D2/Sem.KITTI 3D
+| --- | --- | --- | --- | --- | --- |  --- | --- | ---
+| Baseline (source only)  | 58.38 | 62.76 | 47.83 | 68.77 | 26.80 | 42.0 | 34.16 | 35.86
+| xMUDA  | 64.39 | 63.18 | 55.54 | 69.16 | 42.10 | 46.69 | 38.26 | 45.98
+| xMUDA<sub>PL</sub> | 67.02 | 65.40 | 57.60 | 69.55 | 45.78 | 51.38 | 41.22 | 49.78
+
+### SSDA
+
+| Method | nuSc-Lidarseg: USA/Singap. 2D | nuSc-Lidarseg: USA/Singap. 3D | A2D2/Sem.KITTI 2D | A2D2/Sem.KITTI 3D
+| --- | --- | --- | --- | ---
+| xMoSSDA  | 74.33 | 74.08 | 56.50 | 63.35
+| xMoSSDA<sub>PL</sub> | 75.47 | 74.80 | 59.13 | 68.15
+
+
 ## License
 xMUDA and xMoSSDA are released under the [Apache 2.0 license](./LICENSE).
